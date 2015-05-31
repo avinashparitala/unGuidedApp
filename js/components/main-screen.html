@@ -1,0 +1,516 @@
+<link rel="import" href="../vendors/core-scaffold/core-scaffold.html">
+<link rel="import" href="../vendors/core-icon/core-icon.html">
+<link rel="import" href="../vendors/core-icons/av-icons.html">
+<link rel="import" href="../vendors/core-header-panel/core-header-panel.html">
+<link rel="import" href="../vendors/core-toolbar/core-toolbar.html">
+
+<link rel="import" href="../vendors/paper-shadow/paper-shadow.html">
+<link rel="import" href="../vendors/paper-tabs/paper-tabs.html">
+<link rel="import" href="../vendors/paper-fab/paper-fab.html">
+<link rel="import" href="../vendors/paper-button/paper-button.html">
+
+<link rel="import" href="../vendors/google-map/google-map.html">
+
+<link rel="import" href="./tour-drawer.html">
+<link rel="import" href="./location-editor.html">
+
+<polymer-element name="main-screen" attributes="menuTitle mainTitle">
+
+  <template>
+    <link rel="stylesheet" href="main-screen.css" shim-shadowdom>
+    <link rel="stylesheet" href="../../css/idangerous.swiper.css" shim-shadowdom>
+    <link rel="stylesheet" href="../../css/idangerous.swiper.3dflow.css" shim-shadowdom>
+
+    <core-scaffold id="scaffold" selectedTab="{{selectedTab}}">
+      <!-- Discover -->
+      <div style="display:{{selectedTab == 0 ? 'block;' : 'none;'}}">
+        <div style="display:{{expandedLocation != null ? 'block;' : 'none;'}}">
+          <div class="expanded-location">
+            <div vertical layout class="location-card"
+                 expanded="{{ location.expanded }}">
+              <div class="location-title"> {{expandedLocation.title}} </div>
+              <div class="location-perspectives">
+                <div class="location-perspective" horizontal layout>
+                  <div class="location-perspective-profile-picture"
+                       style="background-image:url(http://lorempixel.com/200/200/people/3);">
+                  </div>
+                  <div horizontal layout center
+                       class="location-perspective-profile-name-container">
+                    <div class="location-perspective-profile-name">
+                      Easwar Palvai
+                    </div>
+                  </div>
+                  <div horizontal layout center>
+                  <paper-button flex class="location-perspective-play-button">
+                    <core-icon icon="av:play-arrow"> </core-icon>
+                  </paper-button>
+                  </div>
+                </div>
+                <div class="location-perspective" horizontal layout>
+                  <div class="location-perspective-profile-picture"
+                       style="background-image:url(http://lorempixel.com/200/200/people/7);">
+                  </div>
+                  <div horizontal layout center
+                       class="location-perspective-profile-name-container">
+                    <div class="location-perspective-profile-name">
+                      Rohan kulkarni
+                    </div>
+              </div>
+                  <div horizontal layout center>
+                  <paper-button flex class="location-perspective-play-button">
+                    <core-icon icon="av:play-arrow"> </core-icon>
+                  </paper-button>
+                  </div>
+                </div>
+                <div class="location-perspective" horizontal layout>
+                  <div class="location-perspective-profile-picture"
+                       style="background-image:url(http://lorempixel.com/200/200/people/10);">
+                  </div>
+                  <div horizontal layout center
+                       class="location-perspective-profile-name-container">
+                    <div class="location-perspective-profile-name">
+                      Shiva Prasad
+                    </div>
+                  </div>
+                  <div horizontal layout center>
+                    <paper-button flex class="location-perspective-play-button">
+                      <core-icon icon="av:play-arrow"> </core-icon>
+                    </paper-button>
+                  </div>
+                </div>
+                <div class="location-perspective" horizontal layout>
+                  <div class="location-perspective-profile-picture"
+                       style="background-image:url(http://lorempixel.com/200/200/people/9);">
+                  </div>
+                  <div horizontal layout center
+                       class="location-perspective-profile-name-container">
+                    <div class="location-perspective-profile-name">
+                      Avinash
+                    </div>
+                  </div>
+                  <div horizontal layout center>
+                    <paper-button flex class="location-perspective-play-button">
+                      <core-icon icon="av:play-arrow"> </core-icon>
+                    </paper-button>
+                  </div>
+                </div>
+              </div>
+              <div class="location-image-gallary">
+                <div id="swiperagain" class="swiper-container">
+                  <div class="swiper-wrapper">
+                    <template repeat="{{picture in pictures}}">
+                      <div class="location-image swiper-slide"
+                           style="background-image:url('{{picture}}');">
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <div class="location-text-blurb">
+                {{expandedLocation.text}}
+              </div>
+              <paper-fab
+                on-click="{{closeInfoBox}}"
+                id="close-button" icon="clear" class="red"></paper-fab>
+            </div>
+          </div>
+        </div>
+        <div id="swiper" class="swiper-container">
+          <div class="swiper-wrapper">
+            <template repeat="{{location in locations}}">
+              <div class="swiper-slide swiper-slide-location"> 
+                <div vertical layout class="location-card">
+                  <div class="location-title"> {{location.title}} </div>
+                  <div class="location-picture"
+                       style="background-image:url('{{location.picture}}');">
+                  </div>
+                  <div horizontal layout class="location-buttons">
+                    <paper-button
+                      flex
+                      onclick="var e=new Event('expand'); e.origin=this; window.dispatchEvent(e);"
+                      class="location-action-button">
+                      <core-icon icon="info-outline"> </core-icon>
+                    </paper-button>
+                    <paper-button
+                      flex
+                      on-click="{{toggleAudio}}"
+                      class="location-action-button">
+                      <core-icon icon="av:play-arrow"> </core-icon>
+                    </paper-button>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Take a tour -->
+      <template if="{{selectedTab == 1}}">
+        <template if="{{selectingTour}}">
+        <div layout vertical>
+          <template repeat="{{tour in available_tours}}">
+            <div layout horizontal class="tour" on-click="{{checkTour}}">
+              <div class="tour-picture"
+                   style="background-image:url('{{tour.picture}}');">
+              </div>
+              <div layout vertical flex class="tour-info">
+                <div class="tour-name"> {{tour.name}} </div>
+                <div layout horizontal class="tour-details" flex end> 
+                  <div class="tour-length" flex> {{tour.length}} km </div>
+                  <div class="tour-time" flex> {{tour.time}} min </div>
+                  <div class="tour-spots" flex> {{tour.spots}} spots </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+        </template>
+        <template if="{{checkingTour}}">
+          <div layout vertical class="big-tour">
+            <div class="big-tour-name">Hyderabad's Must-see Spots</div>
+            <div class="big-tour-byline">by  Siddharth</div>
+            <div class="big-tour-map"></div>
+            <paper-button
+              class="red"
+              on-click="{{takeTour}}">
+              Let's go!
+            </paper-button>
+            <div class="big-tour-reviews">
+              <div layout horizontal class="big-tour-review">
+                <div
+                  class="big-tour-review-profile-picture"
+                  style="background-image:url(http://lorempixel.com/200/200/people/3);">
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-name">
+                Raju&nbsp&nbsp&nbsp&nbsp
+                </div>
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-content">
+                  Enjoyed the trip thoroughly. A must-see indeed....
+                </div>
+                </div>
+              </div>
+              <div layout horizontal class="big-tour-review">
+                <div
+                  class="big-tour-review-profile-picture"
+                  style="background-image:url(http://lorempixel.com/200/200/people/2);">
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-name">
+                  Avanti&nbsp&nbsp&nbsp&nbsp
+                </div>
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-content">
+                  Rohans's experiences were hilarious! Awesome trip!
+                </div>
+                </div>
+              </div>
+              <div layout horizontal class="big-tour-review">
+                <div
+                  class="big-tour-review-profile-picture"
+                  style="background-image:url(http://lorempixel.com/200/200/people/5);">
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-name">
+                  Prashanth&nbsp&nbsp&nbsp&nbsp
+                </div>
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-content">
+                  I won't recommend this, 30 minutes is too short. It all felt rushed.
+                </div>
+                </div>
+              </div>
+              <div layout horizontal class="big-tour-review">
+                <div
+                  class="big-tour-review-profile-picture"
+                  style="background-image:url(http://lorempixel.com/200/200/people/6);">
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-name">
+                  Ramyasri&nbsp&nbsp&nbsp&nbsp
+                </div>
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-content">
+                  Wow! Amazing! Make more such trips!!!
+                </div>
+                </div>
+              </div>
+              <div layout horizontal class="big-tour-review">
+                <div
+                  class="big-tour-review-profile-picture"
+                  style="background-image:url(http://lorempixel.com/200/200/people/9);">
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-name">
+                  Shruti&nbsp&nbsp&nbsp&nbsp
+                </div>
+                </div>
+                <div layout horizontal center>
+                <div class="big-tour-review-content">
+                  The narration was a bit dull. I almost fell asleep!
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template if="{{takingTour}}">
+        <div style="display:{{expandedLocation != null ? 'block;' : 'none;'}}">
+          <div class="expanded-location">
+            <div vertical layout class="location-card"
+                 expanded="{{ location.expanded }}">
+              <div class="location-title"> {{expandedLocation.title}} </div>
+              <div class="location-image-gallary">
+                <div id="swiperagain" class="swiper-container">
+                  <div class="swiper-wrapper">
+                    <template repeat="{{picture in pictures}}">
+                      <div class="location-image swiper-slide"
+                           style="background-image:url('{{picture}}');">
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <div class="location-text-blurb">
+                {{expandedLocation.text}}
+              </div>
+              <paper-fab
+                on-click="{{closeInfoBox}}"
+                id="close-button" icon="clear" class="red"></paper-fab>
+            </div>
+          </div>
+        </div>
+        <div layout vertical>
+            <template repeat="{{location in locations}}">
+              <div vertical layout class="location-card in-tour">
+                <div class="location-title"> {{location.title}} </div>
+                <div class="location-picture"
+                     style="background-image:url('{{location.picture}}');">
+                </div>
+                <div horizontal layout class="location-buttons">
+                  <paper-button
+                    flex
+                    onclick="var e=new Event('expand'); e.origin=this; window.dispatchEvent(e);"
+                    class="location-action-button">
+                    <core-icon icon="info-outline"> </core-icon>
+                  </paper-button>
+                  <paper-button flex class="location-action-button">
+                    <core-icon icon="av:play-arrow"> </core-icon>
+                  </paper-button>
+                </div>
+              </div>
+              <template if="{{!mapVisible}}">
+                <paper-button
+                  on-click="{{showMap}}"
+                  class="show-map-button">
+                  Show Map
+                </paper-button>
+              </template>
+                <div
+                  class="directions-map"
+                  style="height:{{mapVisible ? '300px;' : '0px;'}}margin-top:{{mapVisible ? '-30px;' : '0px;'}} margin-bottom:{{mapVisible ? '-30px;' : '0px;'}}">
+                  <paper-fab
+                    on-click="{{hideMap}}"
+                    style="display:{{mapVisible ? 'block;' : 'none;'}}"
+                    icon="clear" class="red close-map-button"></paper-fab>
+                </div>
+            </template>
+        </div>
+        </template>
+      </template>
+
+      <!-- Tour Creation -->
+      <template if="{{selectedTab == 2}}">
+        <core-header-panel navigation flex id="drawer">
+          <tour-drawer id="tour-drawer" tour="{{tour}}"></tour-drawer>
+        </core-header-panel>
+
+        <div vertical layout tool>
+          <paper-shadow z="1"></paper-shadow>
+        </div>
+
+        <div vertical layout>
+          <div class="content">
+            <location-editor
+              id="locationEditor"
+              location="{{tour.selectedLocation}}">
+            </location-editor>
+          </div>
+        </div>
+      </template>
+
+    </core-scaffold>
+  </template>
+
+  <script>
+
+   Polymer("main-screen", {
+     selectedTab: 0,
+
+     mapVisible: false,
+     selectingTour: true,
+     checkingTour: false,
+     takingTour: false,
+
+     hideMap: function() {
+       this.mapVisible = false;
+     },
+     
+     showMap: function() {
+       this.mapVisible = true;
+     },
+
+     takeTour: function() {
+       this.selectingTour = false;
+       this.checkingTour = false;
+       this.takingTour = true;
+     },
+
+     checkTour: function() {
+       this.selectingTour = false;
+       this.takingTour = false;
+       this.checkingTour = true;
+     },
+
+     makeSwiper: function() {
+       window.mySwiper = new Swiper(this.$.swiper, {
+         slidesPerView: 3,
+         loop: true,
+         tdFlow: {shadows:false}});
+     },
+
+     ready: function() {
+       this.scaffold = this.$.scaffold;
+       this.locationEditor = this.$.locationEditor;
+       window.addEventListener('add-place', this.addPlace.bind(this));
+       window.addEventListener('expand', this.expand.bind(this));
+       this.makeSwiper();
+     },
+
+     addPlace: function() {
+       this.scaffold.togglePanel();
+     },
+
+     closeInfoBox: function() {
+       this.expandedLocation = null;
+     },
+     
+     expand: function(e) {
+       foobar = e.origin.parentElement.parentElement;
+       var title_element = e.origin.parentElement.parentElement.children[0];
+       for (var i = 0; i < this.locations.length; i++) {
+         if (this.locations[i].title == title_element.innerHTML.trim()) {
+           this.expandedLocation = this.locations[i];
+         }
+       }
+       console.log(this.$.swiperagain);
+       window.swiperagain = new Swiper(this.$.swiperagain, {
+         slidesPerView: 3,
+         loop: true,
+         tdFlow: {shadows:false}});
+     },
+
+     expandedLocation: null,
+
+     tour: {
+       name: "",
+       locations: [],
+       selectedLocationIdx: -1,
+       selectedLocation: null,
+     },
+
+     locations: [
+       {
+         title: "Golconda",
+         picture: "./locations/Golkonda/gk1.jpg",
+         text: "Golconda, also known as Golkonda or Golla konda (shepherds hill), a fort of Southern India and capital of medieval Golconda Sultanate (c.1518–1687), is situated 11 km west of Hyderabad, Telangana. It is also a mandal of Hyderabad District. The region is known for the mines that have produced some of the worlds most famous gems, including the Koh-i-Noor, Hope Diamond and the Nassak Diamond.",
+         audio: ""
+       },
+       {
+         title: "Necklace Road",
+         picture: "./locations/neck/neck.jpg",
+         text: "Necklace Road (Telugu: నెక్లెస్ రోడ్, Urdu: نكلس رؤد‎ ) is a boulevard in Hyderabad, Telangana, adjoining the Hussain Sagar lake, which connects NTR Gardens to Sanjeevaiah Park. Named after the first and the famous Necklace Road in Mumbai's Marine Drive. The road from Sanjivaiah park connects to the Tankbund road which in turn connects to the NTR Gardens completing a circle. This stretch of road, along with the Tank Bund, appears in the form of a necklace as seen from the sky - and hence the name.",
+         audio: ""
+       },
+       {
+         title: "Chowmahalla Palace",
+         picture: "./locations/chow/chow.JPG",
+         text: "Chowmahalla Palace or Chowmahallatuu (4 Palaces), is a palace of the Nizams of Hyderabad state. It was the seat of the Asaf Jahi dynasty and was the official residence of the Nizams of Hyderabad while they ruled their state. The palace remains the property of Barkat Ali Khan Mukarram Jah, heir of the Nizams.In Persian, Chahar means four and in Arabic Mahalat (plural of Mahal) means palaces, hence the name Chowmahallat/four palaces, or four.",
+         audio: ""
+       },
+       {
+         title: "Birla Mandir",
+         picture: "./locations/BirlaMandir/birla.jpg",
+         text: "Birla Mandir is a Hindu temple, built on a 280 feet (85 m) high hillock called Naubath Pahad on a 13 acres (53,000 m2) plot. The construction took 10 years and was constructed in 1976 by Swami Ranganathananda of Ramakrishna Mission. The temple was constructed by Birla Foundation, which has also constructed several similar temples across India, all of which are known as Birla Mandir.",
+         audio: ""
+       },
+       {
+         title: "Charminar",
+         picture: "./locations/Charminar/Charminarrr.jpg",
+         text:"The Charminar, built in 1591 CE, is a monument and mosque located in Hyderabad, Telangana, India. The landmark has become a global icon of Hyderabad, listed among the most recognized structures of India. The Charminar is situated on the east bank of Musi river. To the west lies the Laad Bazaar, and to the southwest lies the richly ornamented granite Makkah Masjid.he Charmin",
+         audio: "./locations/voice.m4a"
+       }
+     ],
+
+     pictures: [
+         "./locations/Charminar/char1.jpg",
+         "./locations/Charminar/char2.jpg",
+         "./locations/Charminar/char3.JPG",
+         "./locations/Charminar/char4.jpg",
+         "./locations/Charminar/char5.jpg",
+     ],
+
+     toggleAudio: function() {
+       console.log('hehe');
+       console.log(window.audio);
+          window.audio.play(); 
+     },
+
+     available_tours: [
+       {
+         name:"Hyderabad's must-see",
+         picture:"./locations/1.png",
+         length:15,
+         spots:5,
+         time:30
+       },
+       {
+         name:"My Lake Story",
+         picture:"./locations/2.png",
+         length:4,
+         spots:7,
+         time:15
+       },
+       {
+         name:"Arts at Hyderabad",
+         picture:"./locations/3.png",
+         length:6,
+         spots:22,
+         time:45
+       },
+       {
+         name:"My City of Pearls",
+         picture:"./locations/4.png",
+         length:3,
+         spots:9,
+         time:30
+       },
+       {
+         name:"My food story",
+         picture:"./locations/5.png",
+         length:07,
+         spots:4,
+         time:15
+       }
+     ],
+   });
+
+  </script>
+
+</polymer-element>

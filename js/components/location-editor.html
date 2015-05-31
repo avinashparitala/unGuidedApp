@@ -1,0 +1,135 @@
+<link rel="import" href="../vendors/google-map/google-map.html">
+<link rel="import" href="../vendors/core-icon/core-icon.html">
+<link rel="import" href="../vendors/paper-fab/paper-fab.html">
+
+<polymer-element name="location-editor" attributes="location">
+
+  <template>
+    <link rel="stylesheet" href="location-editor.css" shim-shadowdom>
+    <div fit vertical layout reverse>
+      <div
+        class="waveform"
+        style="display:{{recording ? 'block;' : 'none;'}}"
+        fit>
+	    <canvas id="analyser" width="1024" height="500"></canvas>
+      </div>
+      <google-map
+        id="map"
+        apiKey="AIzaSyCK8tfZ6GD2s26QzCLHqfF2H6o-37bgfik"
+        latitude="{{location && location.latitude ? location.latitude : 17.4477533}}"
+        longitude="{{location && location.longitude ? location.longitude:78.3765194}}"
+        zoom="17"
+        fit
+        disableDefaultUI>
+        <template if="{{location.latitude && location.longitude}}">
+          <google-map-marker id="marker"
+                             latitude="{{location.latitude}}"
+                             longitude="{{location.longitude}}"
+                             radius="{{location.radius}}"
+                             draggable="true">
+          </google-map-marker>
+        </template>
+      </google-map>
+      <div id="secondary-media" layout horizontal center-justified>
+        <paper-fab
+          mini
+          id="video"
+          class="blue"
+          style="display:{{expanded ? 'block;' : 'none;'}}"
+          src="../vendors/icon/av/2x_web/ic_videocam_white_24dp.png">
+        </paper-fab>
+        <paper-fab
+          mini
+          id="photo"
+          class="blue"
+          style="display:{{expanded ? 'block;' : 'none;'}}"
+          src="../vendors/icon/image/2x_web/ic_camera_alt_white_24dp.png">
+        </paper-fab>
+        <paper-fab
+          mini
+          id="add"
+          class="red"
+          icon="{{expanded ? 'remove' : 'add'}}"
+          on-click="{{expand}}">
+        </paper-fab>
+        <paper-fab
+          mini
+          id="text"
+          class="blue"
+          style="display:{{expanded ? 'block;' : 'none;'}}"
+          src="../vendors/icon/hardware/2x_web/ic_keyboard_white_24dp.png">
+        </paper-fab>
+        <paper-fab
+          mini
+          id="link"
+          class="blue"
+          style="display:{{expanded ? 'block;' : 'none;'}}"
+          src="../vendors/icon/content/2x_web/ic_link_white_24dp.png">
+        </paper-fab>
+      </div>
+
+      <div id="voice" layout horizontal center-justified>
+        <paper-fab
+          style="display:{{recording ? 'block;' : 'none;'}} z-index:2;"
+          src="../vendors/icon/av/2x_web/ic_stop_white_48dp.png"
+          on-click="{{toggleRecord}}">
+        </paper-fab>
+        <paper-fab
+          style="display:{{recording ? 'none;' : 'block;'}}"
+          src="../vendors/icon/av/2x_web/ic_mic_white_48dp.png"
+          on-click="{{toggleRecord}}">
+        </paper-fab>
+      </div>
+        <paper-fab
+          id="done-location"
+          class="green"
+          icon="check"
+          style="display:{{!recording && pinDropped ? 'block;' : 'none;'}}"
+          on-click="{{openDrawer}}">
+        </paper-fab>
+    </div>
+  </template>
+
+  <script>
+   Polymer("location-editor", {
+     pinDropped: false,
+
+     clear: function() {
+     },
+
+     openDrawer: function() {
+       window.dispatchEvent(new Event('add-place'));
+     },
+
+     expand: function() {
+       this.expanded = ! this.expanded;
+     },
+
+     mapReady: function() {
+       this.map = this.$.map.getMap();
+       google.maps.event.addListener(this.map, 'click', (function(e) {
+         if (this.location) {
+           this.location.latitude = e.latLng.lat();
+           this.location.longitude = e.latLng.lng();
+           this.pinDropped = true;
+         }
+       }).bind(this));
+     },
+
+     toggleRecord: function() {
+       this.recording = ! this.recording;
+     },
+
+     ready: function() {
+       this.recording = false;
+       analyser_canvas = this.$.analyser;
+       console.log(analyser_canvas);
+       initAudio();
+       window.addEventListener('google-map-ready', this.mapReady.bind(this));
+       this.expanded = false;
+       window.setTimeout(this.openDrawer, 5);
+     }
+   });
+  </script>
+
+</polymer-element>

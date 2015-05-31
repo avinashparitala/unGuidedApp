@@ -1,0 +1,84 @@
+<link rel="import" href="../vendors/paper-input/paper-input.html">
+<link rel="import" href="../vendors/paper-item/paper-item.html">
+<link rel="import" href="../vendors/paper-tabs/paper-tabs.html">
+<link rel="import" href="../vendors/paper-button/paper-button.html">
+
+<link rel="import" href="../vendors/core-selector/core-selector.html">
+<link rel="import" href="../vendors/core-icon/core-icon.html">
+
+<polymer-element name="tour-drawer" attributes="tour">
+
+  <template>
+    <link rel="stylesheet" href="tour-drawer.css" shim-shadowdom>
+    <div class="tour-drawer-container" layout vertical fit>
+      <paper-input
+        label="Tour name"
+        class="dark tour-name"
+        committedvalue="{{tour.name}}"
+        floatinglabel>
+      </paper-input>
+      <core-selector id="selector" selected="{{tour.selectedLocationIdx}}">
+        <template repeat="{{location in tour.locations}}">
+          <paper-item noink>
+            <div>
+              <paper-input label="Location name"
+                           class="dark location-name"
+                           value="{{location.name}}"
+                           committedvalue="{{location.name}}">
+                {{location.name}}
+              </paper-input>
+            </div>
+          </paper-item>
+        </template>
+      </core-selector>
+      <div horizontal center-justified layout>
+        <paper-button
+          class="red"
+          on-click="{{addPlace}}"
+          style="display:{{tour.name == '' || (tour.locations.length != 0 && tour.locations[tour.locations.length-1].name == '') ? 'none' : 'auto'}};"
+          mini>
+          Add Location
+        </paper-button>
+      </div>
+      <div flex vertical reverse layout
+          style="display:{{tour.locations.length == 0 ? 'none' : 'auto'}};">
+        <paper-tabs class="top" selected="0">
+          <paper-tab> <core-icon icon="lock"></core-icon> </paper-tab>
+          <paper-tab> <core-icon icon="account-child"></core-icon> </paper-tab>
+          <paper-tab> <core-icon icon="language"></core-icon> </paper-tab>
+        </paper-tabs>
+      </div>
+    </div>
+  </template>
+
+  <script>
+
+   Polymer("tour-drawer", {
+
+     ready: function() {
+       window.addEventListener('core-activate', this.placeSelected.bind(this));
+       this.selector = this.$.selector;
+     },
+
+     placeSelected: function() {
+       this.tour.selectedLocation =
+         this.tour.locations [this.tour.selectedLocationIdx];
+     },
+
+     addPlace: function() {
+       var e = new Event('add-place');
+       this.tour.locations.push({
+         latitude: null,
+         longitude: null,
+         radius: 80,
+         name: ""
+       });
+       this.tour.selectedLocationIdx = this.tour.locations.length - 1;
+       this.placeSelected();
+       window.dispatchEvent(e);
+     }
+   });
+
+  </script>
+
+</polymer-element>

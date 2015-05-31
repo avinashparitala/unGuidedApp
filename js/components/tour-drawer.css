@@ -1,0 +1,65 @@
+.dark /deep/ ::-webkit-input-placeholder {
+    /* platform specific rules for placeholder text */
+    color: #777;
+}
+.dark /deep/ ::-moz-placeholder {
+    color: #777;
+}
+.dark /deep/ :-ms-input-placeholder {
+    color: #777;
+}
+
+.dark /deep/ .unfocused-underline {
+    /* line color when the input is unfocused */
+    background-color: #2196f3;
+}
+
+.dark /deep/ .focused-underline {
+    /* line color when the input is focused */
+    background-color: #2196f3;
+}
+
+.dark /deep/ .floated-label .label-text {
+    /* floating label color when the input is focused */
+    color: #2196f3;
+}
+
+.dark[focused] /deep/ .floated-label .label-text {
+    /* floating label color when the input is focused */
+    color: #2196f3;
+}
+
+.dark /deep/ .cursor {
+    /* cursor color during the focus transition */
+    background-color: #fff;
+}
+
+paper-button.red {
+    color: #fff;
+    background-color: #db4437;
+    margin-top: 15px;
+    width: 82%;
+}
+
+paper-input.tour-name {
+    margin-left: 20px;
+    width: 83%;
+}
+
+paper-input.location-name {
+    margin-left: 20px;
+    width: 136%;
+    font-size: 12px;
+}
+
+core-menu {
+    margin: 0px;
+}
+
+paper-item.core-selected {
+    background-color: #3e454a;
+}
+
+.tour-drawer-container {
+    z-index: 5;
+}

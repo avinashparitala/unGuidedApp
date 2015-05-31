@@ -1,0 +1,36 @@
+google-map {
+    display: block;
+    height: 100%;
+}
+
+paper-fab {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+paper-fab.green {
+    background: #259b24;
+}
+
+paper-fab.blue {
+    background: #5677fc;
+}
+
+#voice {
+    margin-bottom: 20px;
+}
+
+#secondary-media {
+    margin-bottom: 50px;
+}
+
+.waveform {
+    z-index: 1;
+    background-color: rgba(0,0,0,0.8);
+}
+
+#done-location {
+    position: fixed;
+    bottom: 111px;
+    left: 70%;
+}

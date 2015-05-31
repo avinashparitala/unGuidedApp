@@ -1,0 +1,307 @@
+
+core-scaffold {
+    font-family: sans-serif;
+}
+
+/* menu bar of the left panel */
+core-toolbar {
+    background: #000000;
+    color: #fafafa;
+}
+
+core-toolbar.medium-tall {
+}
+
+/* content of the left panel */
+core-header-panel {
+    background: #333;
+    color: #fafafa;
+}
+
+.content {
+    /* position: relative; */
+}
+
+.appname {
+    font-family: "Kaushan Script","Helvetica Neue",Helvetica,Arial,cursive;
+    color: #fff;
+    font-size: 1.8em;
+}
+
+/*
+http://stackoverflow.com/questions/24594333/polymer-core-scaffold-coloring-and-paper-button
+*/
+
+core-scaffold::shadow core-icon-button {
+  margin: 0px;
+  margin-top: -17px;
+}
+
+core-scaffold::shadow paper-tabs {
+  margin-left: 30px;
+}
+
+/* title bar of the right panel */
+core-scaffold::shadow core-toolbar {
+    background: #1d9bf5;
+    color: #fafafa;
+    height: 48px;
+}
+
+/* content of the right panel */
+core-scaffold::shadow core-header-panel {
+    /* background: #333; */
+    /* color: #fafafa; */
+}
+
+core-scaffold::shadow core-header-panel::shadow #mainContainer {
+  background-color: #222;
+}
+
+#swiper {
+  margin-top: 50px;
+}
+
+#swiper .swiper-wrapper {
+  margin-left: -23px;
+}
+
+.location-card {
+  width: 200px;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 1em black;
+  transition: height 0.5s;
+  transition: width 0.5s;
+}
+
+.location-title {
+  text-align: center;
+  background-color: #1d9bf5;
+  color: #fff;
+  font-size: 1.5em;
+  padding: 15px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.location-picture {
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 160px;
+  height: 160px;
+  background-position: center;
+  background-image: url("../../locations/MemAud/chu_video.jpg");
+  background-size: cover;
+  border-radius: 3px;
+}
+
+.location-buttons {
+  margin-left: 10px;
+  margin-right: 14px;
+  margin-bottom: 10px;
+}
+
+.location-action-button {
+  /* background-color: #1d9bf5; */
+}
+
+.expanded-location {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.location-perspectives {
+  overflow: scroll;
+  height: 160px;
+}
+
+.location-perspective {
+  margin: 2px;
+  padding: 10px;
+}
+
+.location-perspective-profile-picture {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-size: cover;
+}
+
+.expanded-location .location-card {
+  width: 100%;
+}
+
+.location-perspective-profile-name-container {
+  width: 70%;
+}
+
+.location-perspective-profile-name {
+  width: 100%;
+  padding-left: 20px;
+  font-size: 1.3em;
+}
+
+.location-perspective-play-button {
+  width: 44.75px;
+  height: 44.75px;
+  min-width: 44.75px;
+  border-radius: 22.3px;
+  background-color: #1d9bf5;
+}
+
+.location-image {
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 160px !important;
+  height: 120px !important;
+  background-position: center;
+  background-size: cover;
+  border-radius: 3px;
+  border: solid 2px white;
+}
+
+#swiperagain {
+  height: 160px;
+  background-color: #222;
+}
+
+.location-text-blurb {
+  padding: 25px;
+  height: 200px;
+  overflow: scroll;
+}
+
+#close-button {
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+}
+
+.tour {
+  padding: 20px;
+}
+
+.tour-picture {
+  margin-right: 20px;
+  width: 100px;
+  height: 100px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 3px;
+}
+
+.tour-info {
+  color: white;
+}
+
+.tour-name {
+  padding-top: 15px;
+  font-size: 1.5em;
+}
+
+.tour-details {
+  padding-bottom: 15px;
+}
+
+.big-tour {
+  padding: 20px;
+  color: white;
+  height: 100%;
+}
+
+.big-tour-name {
+  font-size: 2em;
+}
+
+.big-tour-byline {
+  text-align: right;
+}
+
+.big-tour-map {
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 230px;
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../../locations/big-tour.png");
+  border-radius: 5px;
+}
+
+paper-button.red {
+  color: #fff;
+  background-color: #db4437;
+  margin-top: 15px;
+  margin: auto;
+  width: 230px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.big-tour-review-profile-picture {
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background-size: cover;
+  border: solid 2px #ccc;
+}
+
+.big-tour-reviews {
+  margin-top: 20px;
+}
+
+.big-tour-review {
+  margin-bottom: 20px;
+}
+
+.big-tour-review-name {
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.big-tour-review-content {
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+.in-tour {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 5;
+}
+
+.want-padding {
+  padding-top : 50px;
+}
+
+.show-map-button {
+  margin: auto;
+  background-color: #ddd;
+}
+
+.directions-map {
+  margin: auto;
+  margin-top: -30px;
+  margin-bottom: -30px;
+  transition: height 0.5s;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../../locations/directions.png");
+}
+
+.close-map-button {
+  top: 230px;
+  right: -82%;
+}
